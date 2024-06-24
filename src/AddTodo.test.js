@@ -45,12 +45,18 @@ test('test that App component doesn\'t add a task without task name', () => {
   const button = screen.getByRole('button', { name: /Add/i });
   const dueDate = "05/30/2023";
 
+  // Initially there should be no tasks
+  let tasks = screen.queryAllByTestId('todo-task');
+  expect(tasks.length).toBe(0);
+
+  // Try to add a task without a name
   fireEvent.change(inputTask, { target: { value: "" } });
   fireEvent.change(inputDate, { target: { value: dueDate } });
   fireEvent.click(button);
 
-  const task = screen.queryByText(/History Test/i);
-  expect(task).not.toBeInTheDocument();
+  // Verify that no new task was added
+  tasks = screen.queryAllByTestId('todo-task');
+  expect(tasks.length).toBe(0);
 });
 
 test('test that App component doesn\'t add a task without due date', () => {
